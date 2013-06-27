@@ -34,11 +34,22 @@
 		 * @var array
 		 */
 		private $options_default;
-
+		/**
+		 * The record event -- fired while parsing each row of the CSv data
+		 */
 		const EVENT_ON_RECORD = "record";
 		const EVENT_ON_DATA = "data";
+		/**
+		 * The close event -- fired when using the to_stream() after the file written to has been closed
+		 */
 		const EVENT_ON_CLOSE = "close";
+		/**
+		 * The end event --  fired after the CSV file has been completely parsed
+		 */
 		const EVENT_ON_END = "end";
+		/**
+		 * The error event -- fired whenever an error occurs
+		 */
 		const EVENT_ON_ERROR = "error";
 		/**
 		 * The container for all monitored events and their respective handlers
@@ -118,6 +129,7 @@
 		 * @param array $array The array of strings to be processed
 		 * @param array $options
 		 * @return \PhpCSV\PhpCSV_Parser
+		 * @throws PhpCSV_Parser_Exception
 		 */
 		public function from_array(array $array, array $options=null){
 			$this->setOptions($options);
@@ -169,6 +181,7 @@
 		 * @param resource $file_handle A resource obtained by using fopen() in read mode
 		 * @param array $options
 		 * @return \PhpCSV\PhpCSV_Parser
+		 * @throws PhpCSV_Parser_Exception
 		 */
 		public function from_stream(&$file_handle, array $options=null){
 			$this->setOptions($options);
@@ -186,7 +199,7 @@
 			while(!feof($file_handle)){
 				$lines[] = fgets($file_handle);
 			}
-			$error_line = __LINE__ + 1;
+			$error_line = __LINE__ + 1; #WARNING: don't move the line above away from there
 			if(empty($lines)){
 				$this->throwException(
 					"Empty CSV file",
@@ -202,6 +215,7 @@
 		 * Sets the data array with the content that will be processed at a later time
 		 * @param array $lines An array containing the raw processed data
 		 * @return \PhpCSV\PhpCSV_Parser
+		 * @throws PhpCSV_Parser_Exception
 		 */
 		private function setDataArray(array $lines){
 			foreach($lines as $line){
@@ -240,29 +254,72 @@
 			if($this->hasHandler($event_name) and is_callable($this->event_handlers[$event_name])){
 				#a handler exists for the event
 				$handler = $this->event_handlers[$event_name];
-				switch($event_name){
-					case self::EVENT_ON_CLOSE:
-						break;
-					case self::EVENT_ON_DATA:
-						break;
-					case self::EVENT_ON_END:
-						break;
-					case self::EVENT_ON_ERROR:
-						call_user_func_array($handler,$event_data);
-						break;
-					case self::EVENT_ON_RECORD:
-						break;
+				$events = array(
+					self::EVENT_ON_CLOSE,self::EVENT_ON_DATA,self::EVENT_ON_END,self::EVENT_ON_ERROR,self::EVENT_ON_RECORD
+				);
+				if(in_array($event_name, $events)){
+					call_user_func_array($handler,$event_data);
 				}
 			}
 			return $this;
 		}
+		/**
+		 * Parses each row of data pulled from the CSV file and converts each row to an array of fields
+		 * @return \PhpCSV\PhpCSV_Parser
+		 */
 		private function parse(){
+			$this->parsed_data_array = array();
+			foreach($this->data_array as $index=>$csv_string){
+				$parsed_row = str_getcsv($csv_string,$this->options['delimiter'],$this->options['quote'],$this->options['escape']);
+				$this->fire(self::EVENT_ON_RECORD,array($parsed_row, $index));
+				$this->parsed_data_array[] = $parsed_row;
+			}
+			$this->fire(self::EVENT_ON_END,array());
+			return $this;
+		}
+		/**
+		 * Called after the data has been parsed.
+		 * It supplies each parsed row to a user defined function. If the function returns NULL, the index is removed else it
+		 * replaces the value at that index with the new value
+		 *
+		 * @param callable $callable The use defined function to pass each parsed row to
+		 * @return \PhpCSV\PhpCSV_Parser
+		 * @throws PhpCSV_Parser_Exception
+		 */
+		public function transform($callable){
+			$error_line = __LINE__ + 1; #WARNING: don't move the line above away from there
+			if(!is_callable($callable)){
+				$this->throwException(
+					"The specified callable is not Callable",
+					$error_line,
+					"It could be that the function you supplied to transform could not be found in the context"
+				);
+			}
+			$error_line = __LINE__ + 1; #WARNING: don't move the line above away from there
+			if(empty($this->parsed_data_array)){
+				$this->throwException(
+					"Empty data set for transform",
+					$error_line,
+					"The data has not been parsed so transform should not be called yet!!!"
+				);
+			}
+			foreach($this->parsed_data_array as $index=>$row){
+				$transformed_row = call_user_func_array($callable,array($row, $index));
+				if($transformed_row === null){
+					unset($this->parsed_data_array[$index]);
+				} else {
+					$this->parsed_data_array[$index] = $transformed_row;
+				}
+			}
+			return $this;
+		}
+		public function to_string(){
 
 		}
 		public function to_array(){
-
+			
 		}
-		public function to_file(){
+		public function to_path(){
 
 		}
 	}
