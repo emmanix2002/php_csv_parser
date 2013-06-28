@@ -365,7 +365,7 @@
 				default:
 					if(is_callable($string_param)){
 						#a function to handle the data
-						call_user_func_array($string_param,array($this->parsed_data_array));
+						return call_user_func_array($string_param,array($this->parsed_data_array));
 					} else if(is_dir(dirname($string_param))){
 						#a valid path
 						return $this->to_path($string_param);
