@@ -157,7 +157,6 @@
 			$row_delimiter = (strtolower($this->options['rowDelimiter']) === "auto")? PHP_EOL:$this->options['rowDelimiter'];
 			$lines = explode($row_delimiter, $csv_string);
 			$this->setDataArray($lines);
-			$this->parse();
 			return $this;
 		}
 		/**
@@ -178,7 +177,6 @@
 				);
 			}
 			$this->setDataArray($array);
-			$this->parse();
 			return $this;
 		}
 		/**
@@ -209,7 +207,6 @@
 				);
 			}
 			$this->setDataArray($lines);
-			$this->parse();
 			return $this;
 		}
 		/**
@@ -244,7 +241,6 @@
 				);
 			}
 			$this->setDataArray($lines);
-			$this->parse();
 			return $this;
 		}
 		/**
@@ -303,7 +299,7 @@
 		 * Parses each row of data pulled from the CSV file and converts each row to an array of fields
 		 * @return \PhpCSV\PhpCSV_Parser
 		 */
-		private function parse(){
+		public function parse(){
 			$this->parsed_data_array = array();
 			foreach($this->data_array as $index=>$csv_string){
 				$parsed_row = str_getcsv($csv_string,$this->options['delimiter'],$this->options['quote'],$this->options['escape']);
@@ -390,7 +386,7 @@
 		 * Returns the parsed content as a string using the options set in the $options_to array
 		 * @return string
 		 */
-		public function to_string(){
+		private function to_string(){
 			$csv_string_out = "";
 			$line_ending = (strtolower($this->options_to['rowDelimiter']) === "auto")?
 				PHP_EOL:$this->options_to['rowDelimiter'];
@@ -407,7 +403,7 @@
 		 * Returns the processed array of data
 		 * @return array
 		 */
-		public function to_array(){
+		private function to_array(){
 			return $this->parsed_data_array;
 		}
 		/**
@@ -415,7 +411,7 @@
 		 * @param string $file_path The path to the file where the data should be written
 		 * @return bool
 		 */
-		public function to_path($file_path){
+		private function to_path($file_path){
 			$string_content = $this->to_string();
 			$error_line = __LINE__ + 2; #WARNING: don't move the line above away from there
 			clearstatcache(true, dirname($file_path));
