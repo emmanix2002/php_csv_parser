@@ -13,6 +13,10 @@
 		var_dump($csv_parser_3->from_string('#Welcome\n"1","2","3","4"\n"a","b","c","d"',array("rowDelimiter"=>"\\n"))
 					->parse()
 					->to("to_callback"));
-
+	}
+	function to_callback(array $rows){
+		foreach($rows as $row){
+			echo implode(" | ", $row)."<br />";
+		}
 	}
 ?>

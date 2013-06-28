@@ -40,9 +40,14 @@ It has now been tested on small data sets...Still remains to be seen how it perf
 					->to("to_callback"));
 
 	}
+    function to_callback(array $rows){
+        foreach($rows as $row){
+            echo implode(" | ", $row)."<br />";
+        }
+    }
 ```
 ```php
-    include("C:/Users/Emmanuel/Documents/GitHub/php_csv_parser/class.php-csv-parser.php");
+    include("/path/to/class.php-csv-parser.php");
     $csv_parser = new PhpCSV\PhpCSV_Parser();
     if($csv_parser){
         $csv_parser->from_string('#Welcome\n"1","2","3","4"\n"a","b","c","d"',array("rowDelimiter"=>'\n'));
