@@ -30,14 +30,27 @@
 		 */
 		private $options;
 		/**
+		 * The array to hold the options for the writer
+		 * @var array
+		 */
+		private $options_to;
+		/**
+		 * The array to hold the default options for the writer
+		 * @var array
+		 */
+		private $options_to_default;
+		/**
 		 * The array to hold the default options for the parser
 		 * @var array
 		 */
 		private $options_default;
 		/**
-		 * The record event -- fired while parsing each row of the CSv data
+		 * The record event -- fired while parsing each row of the CSV data
 		 */
 		const EVENT_ON_RECORD = "record";
+		/**
+		 * The data event -- fired on each line(row) once the data has been transformed and stringified
+		 */
 		const EVENT_ON_DATA = "data";
 		/**
 		 * The close event -- fired when using the to_stream() after the file written to has been closed
@@ -60,11 +73,16 @@
 		 * The class constructor
 		 */
 		public function __construct(){
-			$this->data_source = null;
 			$this->data_array = array();
 			$this->parsed_data_array = array();
 			$this->options_default = array(
 				"comment"=>"#",		#Treats all the characteres after this one as a comment, default to ‘#’
+				"delimiter"=>",",	#Set the field delimiter. One character only, defaults to comma.
+				"escape"=>'"',		#Set the escape character, one character only, defaults to double quotes. **NOT USED YET**
+				"quote"=>'"',	#Optional character surrounding a field, one character only, defaults to double quotes
+				"rowDelimiter"=>"auto"	#String used to delimit record rows or a special value; Applicable to from_string() only
+			);
+			$this->options_to_default = array(
 				"delimiter"=>",",	#Set the field delimiter. One character only, defaults to comma.
 				"escape"=>'"',		#Set the escape character, one character only, defaults to double quotes. **NOT USED YET**
 				"quote"=>'"',	#Optional character surrounding a field, one character only, defaults to double quotes
@@ -92,13 +110,29 @@
 		 *		<ul>
 		 *			<li><b>comment</b>: a single character that is used to identify lines containing comments (default: #)</li>
 		 *			<li><b>delimiter</b>: a single character that serves as the delimiter for content on each line (default: ,)</li>
-		 *			<li><b>escape</b>: a single character that's used to enclose each field value (default: ")</li>
+		 *			<li><b>escape</b>: a single character that's used to escape each field value (default: ")</li>
+		 *			<li><b>quote</b>: a single character that's used to enclose each field value (default: ")</li>
+		 *			<li><b>rowDelimiter</b>: The line ending character (default: auto)</li>
 		 *		</ul>
 		 * @return \PhpCSV\PhpCSV_Parser
 		 */
 		public function setOptions(array $options=null){
 			$this->options = array_merge($this->options_default,$options);
 			return $this;
+		}
+		/**
+		 * Sets the options on the parser
+		 * @param array $options The options array support certain settings which are highlighted below
+		 *		<ul>
+		 *			<li><b>delimiter</b>: a single character that serves as the delimiter for content on each line (default: ,)</li>
+		 *			<li><b>escape</b>: a single character that's used to escape each field value (default: ")</li>
+		 *			<li><b>quote</b>: a single character that's used to enclose each field value (default: ")</li>
+		 *			<li><b>rowDelimiter</b>: The line ending character (default: auto)</li>
+		 *		</ul>
+		 * @return \PhpCSV\PhpCSV_Parser
+		 */
+		public function setToOptions(array $options=null){
+			$this->options_to = array_merge($this->options_to_default,$options);
 		}
 		/**
 		 * Sets the CSV data to be processed as a string
@@ -230,7 +264,7 @@
 		 * Registers a new handler for the specified event
 		 * @param string $event_name The name of the event to register the callable for. One of the EVENT_ON_* constants
 		 * @param callable $callable The callable to be notified when the event occurs
-		 * @return \PhpCSV\PhpCSV_Parser#
+		 * @return \PhpCSV\PhpCSV_Parser
 		 */
 		public function on($event_name, $callable){
 			$this->event_handlers[$event_name] = $callable;
@@ -274,7 +308,7 @@
 				$this->fire(self::EVENT_ON_RECORD,array($parsed_row, $index));
 				$this->parsed_data_array[] = $parsed_row;
 			}
-			$this->fire(self::EVENT_ON_END,array());
+			$this->fire(self::EVENT_ON_END,array(count($this->parsed_data_array)));
 			return $this;
 		}
 		/**
@@ -310,17 +344,60 @@
 				} else {
 					$this->parsed_data_array[$index] = $transformed_row;
 				}
+				$this->fire(self::EVENT_ON_DATA,array($transformed_row, $index));
 			}
 			return $this;
+		}
+		public function to($string_param, array $options=null){
+			$this->setToOptions($options);
+			$string_param = trim($string_param);
+			switch($string_param){
+				case "string":
+					return $this->to_string();
+					break;
+				case "array":
+					return $this->to_array();
+					break;
+				default:
+					if(is_callable($string_param)){
+						#a function to handle the data
+						call_user_func_array($string_param,array($this->parsed_data_array));
+					} else if(is_dir(dirname($string_param))){
+						#a valid path
+						return $this->to_path($string_param);
+					} else {
+						#i have no idea what it is
+						$error_line = __LINE__ - 2;
+						$this->throwException(
+							"The data destination could not be resolved",
+							$error_line,
+							"The destination can be any of the following: string, array, a function name (as a string) or
+								a path to a file (e.g /home/username/parsed_csv/parsed-content-1.csv and the directory
+								/home/username/parsed_csv must exist)"
+						);
+					}
+			}
 		}
 		public function to_string(){
 
 		}
 		public function to_array(){
-			
+			return $this->parsed_data_array;
 		}
-		public function to_path(){
-
+		public function to_path($file_path){
+			$is_save_successful = false;
+			$string_content = $this->to_string();
+			if(!is_writable(dirname($file_path))){
+				#no permissions to the directory
+			}
+			$file_handle = @fopen($file_path,"wt");
+			if($file_handle){
+				$written = fwrite($file_handle,$string_content);
+				fclose($file_handle);
+				$this->fire(self::EVENT_ON_CLOSE,array(count($this->parsed_data_array)));
+				$is_save_successful = ($written)? true:false;
+			}
+			return $is_save_successful;
 		}
 	}
 ?>
