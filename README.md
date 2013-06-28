@@ -4,6 +4,10 @@ PHP CSV Parser
 
 + PHP 5.3 (it uses some PHP 5.3 specific functions like str_getcsv(...))
 
+## WARNING
+
+This class has not been fully tested to ensure it works as it should -- (it's a work in progress) ;-)
+
 ## Examples
 
 ```php
