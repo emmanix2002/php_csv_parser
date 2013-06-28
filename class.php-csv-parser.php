@@ -146,8 +146,6 @@
 		 */
 		public function from_string($csv_string=null, array $options=null){
 			$this->setOptions($options);
-			echo $csv_string;
-			var_dump($this->options);
 			$error_line = __LINE__ + 1; #WARNING: don't move the line above away from there
 			if($csv_string === null or !is_string($csv_string) or strlen($csv_string) === 0){
 				$this->throwException(
@@ -156,9 +154,8 @@
 					"Arguments 1 must be a string"
 				);
 			}
-			$row_delimiter = (strtolower($this->options['rowDelimiter']) === "auto")? "".PHP_EOL."":$this->options['rowDelimiter'];
+			$row_delimiter = (strtolower($this->options['rowDelimiter']) === "auto")? PHP_EOL:$this->options['rowDelimiter'];
 			$lines = explode($row_delimiter, $csv_string);
-			var_dump($lines);
 			$this->setDataArray($lines);
 			$this->parse();
 			return $this;
@@ -353,6 +350,12 @@
 			}
 			return $this;
 		}
+		/**
+		 *
+		 * @param string $string_param
+		 * @param array $options
+		 * @return mixed
+		 */
 		public function to($string_param, array $options=null){
 			$this->setToOptions($options);
 			$string_param = trim($string_param);
