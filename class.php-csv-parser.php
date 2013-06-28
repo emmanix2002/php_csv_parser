@@ -378,25 +378,54 @@
 					}
 			}
 		}
+		/**
+		 * Returns the parsed content as a string using the options set in the $options_to array
+		 * @return string
+		 */
 		public function to_string(){
-
+			$csv_string_out = "";
+			
+			return $csv_string_out;
 		}
+		/**
+		 * Returns the processed array of data
+		 * @return array
+		 */
 		public function to_array(){
 			return $this->parsed_data_array;
 		}
+		/**
+		 * Writes the parsed content to the specified file
+		 * @param string $file_path The path to the file where the data should be written
+		 * @return bool
+		 */
 		public function to_path($file_path){
-			$is_save_successful = false;
 			$string_content = $this->to_string();
+			$error_line = __LINE__ + 2; #WARNING: don't move the line above away from there
+			clearstatcache(true, dirname($file_path));
 			if(!is_writable(dirname($file_path))){
 				#no permissions to the directory
+				$this->throwException(
+					"The data destination is not writable",
+					$error_line,
+					"The directory exists but it doesn't seem to be writable by the Apache user and/or group. Please adjust
+						the permission settings on your server to allow this!!!"
+				);
 			}
+			$error_line = __LINE__ + 1; #WARNING: don't move the line above away from there
 			$file_handle = @fopen($file_path,"wt");
-			if($file_handle){
-				$written = fwrite($file_handle,$string_content);
-				fclose($file_handle);
-				$this->fire(self::EVENT_ON_CLOSE,array(count($this->parsed_data_array)));
-				$is_save_successful = ($written)? true:false;
+			if($file_handle === false){
+				#could not get the file handle
+				$this->throwException(
+					"A stream could not be created for the data destination",
+					$error_line,
+					"Please retry the process in a bit..."
+				);
 			}
+			$written = fwrite($file_handle,$string_content);
+			fclose($file_handle);
+			$this->fire(self::EVENT_ON_CLOSE,array(count($this->parsed_data_array)));
+			$is_save_successful = ($written)? true:false;
 			return $is_save_successful;
 		}
 	}
