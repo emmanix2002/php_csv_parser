@@ -384,7 +384,15 @@
 		 */
 		public function to_string(){
 			$csv_string_out = "";
-			
+			$line_ending = (strtolower($this->options_to['rowDelimiter']) === "auto")?
+				PHP_EOL:$this->options_to['rowDelimiter'];
+			foreach($this->parsed_data_array as $row){
+				$row_as_string = $this->options_to['quote'].implode(
+					"{$this->options_to['delimiter']}{$this->options_to['quote']}",
+					$row
+				).$this->options_to['quote'].$line_ending;
+				$csv_string_out .= $row_as_string;
+			}
 			return $csv_string_out;
 		}
 		/**
