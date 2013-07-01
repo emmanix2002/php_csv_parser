@@ -1,5 +1,5 @@
 <?php
-	include("C:/Users/Emmanuel/Documents/GitHub/php_csv_parser/class.php-csv-parser.php");
+	include("/path/to/class.php-csv-parser.php");
 	$csv_parser = new PhpCSV\PhpCSV_Parser();
 	$csv_parser_2 = new PhpCSV\PhpCSV_Parser();
 	$csv_parser_3 = new PhpCSV\PhpCSV_Parser();

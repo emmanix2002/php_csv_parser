@@ -1,10 +1,10 @@
 <?php
-	include("C:/Users/Emmanuel/Documents/GitHub/php_csv_parser/class.php-csv-parser.php");
+	include("/path/to/class.php-csv-parser.php");
 	$csv_parser = new PhpCSV\PhpCSV_Parser();
 	if($csv_parser){
-		var_dump($csv_parser->from_path('C:/Users/Emmanuel/Documents/GitHub/php_csv_parser/examples/csv_1.csv')
+		var_dump($csv_parser->from_path('/path/to/examples/csv_1.csv')
 					->parse()
-					->to("C:/Users/Emmanuel/Documents/GitHub/php_csv_parser/examples/csv_created_by_to_path.csv"));
+					->to("/path/to/examples/csv_created_by_to_path.csv"));
 
 	}
 ?>

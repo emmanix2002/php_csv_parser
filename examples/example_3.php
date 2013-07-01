@@ -1,5 +1,5 @@
 <?php
-	include("C:/Users/Emmanuel/Documents/GitHub/php_csv_parser/class.php-csv-parser.php");
+	include("/path/to/class.php-csv-parser.php");
 	$csv_parser = new PhpCSV\PhpCSV_Parser();
 	if($csv_parser){
 		$csv_parser->from_string('#Welcome\n"1","2","3","4"\n"a","b","c","d"',array("rowDelimiter"=>'\n'));
