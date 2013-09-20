@@ -1,0 +1,229 @@
+DialingCode,Country,TimeZone
++93,Afghanistan,+4.5
++355,Albania,+1
++213,Algeria,+1
++685,American Samoa,-11
++376,Andorra,+1
++244,Angola,+1
++1 264,Anguilla,-4
++672,Australian Antarctic Territory,+4.5 --> +10
++1 268,Antigua and Barbuda,-4
++599,Antilles,-4
++54,Argentina,-3
++374,Armenia,+4
++297,Aruba,-4
++247,Ascension Island,+0
++61,Australia,+8 --> +10
++43,Austria,+1
++994,Azerbaijan,+1
++351,Azores,-1
++1 242,Bahamas,-5
++973,Bahrain,+3
++880,Bangladesh,+6
++1 246,Barbados,-4
++1 268,Barbuda and Antigua,-4
++375,Belarus,+2
++32,Belgium,+1
++501,Belize,-6
++229,Benin,+1
++1 441,Bermuda,-4
++975,Bhutan,+6
++591,Bolivia,-4
++387,Bosnia Herzegovina,+1
++267,Botswana,+2
++55,Brazil,-3
++1 284,British Virgin Islands,-4
++673,Brunei Darussalam,+8
++359,Bulgaria,+2
++226,Burkina Faso,+0
++95,Burma (Myanmar),+6.5
++257,Burundi,+2
++855,Cambodia,+7
++237,Cameroon,+1
++1,Canada,-3.5 --> -8
++238,Cape Verde Islands,-1
++1 345,Cayman Islands,-5
++236,Central African Republic,+1
++235,Chad,+1
++56,Chile,-4
++86,China,+8
++672,Christmas Island,+7
++672,Cocos Island,+6.5
++57,Colombia,-5
++269,Comoros,+3
++242,Congo,+1
++682,Cook Islands,+10.5
++506,Costa Rica,-6
++225,Cote D'Ivoire (Ivory Coast),+0
++385,Croatia,+1
++53,Cuba,-5
++357,Cyprus,+2
++42,Czech Republic,+1
++45,Denmark,+1
++253,Djibouti,+3
++1 767,Dominica,-4
++1 809,Dominican Rebublic,-4
++593,Ecuador,-5
++20,Egypt,+2
++503,El Salvador,-6
++240,Equatorial Guinea,+1
++291,Eritrea,+3
++372,Estonia,+2
++251,Ethiopia,+3
++500,Falkland Islands,-4
++298,Faroe Islands,+0
++679,Fiji,+12
++358,Finland,+2
++33,France,+1
++594,French Guiana,-3
++689,French Polynesia,+10
++241,Gabon,+1
++220,Gambia,+0
++995,Georgia,+4
++49,Germany,+1
++233,Ghana,+0
++350,Gibraltar,+1
++30,Greece,+2
++299,Greenland,-3
++1 473,Grenada,-4
++1 784,Grenadines,-4
++590,Guadeloupe,-4
++671,Guam,-10
++502,Guatemala,-6
++224,Guinea,+0
++245,Guinea-Bissau,+0
++592,Guyana,-3
++509,Haiti,-5
++504,Honduras,-6
++852,Hong Kong,+8
++36,Hungary,+1
++354,Iceland,+0
++91,India,+5.5
++62,Indonesia,+7 --> +8
++98,Iran,+3.5
++964,Iraq,+3
++353,Ireland,+0
++972,Israel,+2
++39,Italy,+1
++225,Ivory Coast (Cote d'Ivorie),+0
++1 876,Jamaica,-5
++81,Japan,+9
++962,Jordan,+2
++7,Kazakhstan,+5 --> +6
++254,Kenya,+3
++7,Kirghizstan,+3
++686,Kiribati,+12
++381,Kosovo,+1
++965,Kuwait,+3
++856,Laos,+7
++371,Latvia,+2
++961,Lebanon,+2
++266,Lesotho,+2
++231,Liberia,+0
++218,Libya,+1
++423,Liechtenstein,+1
++370,Lithuania,+2
++352,Luxembourg,+1
++853,Macao,+8
++389,Macedonia,+1
++261,Madagascar,+3
++265,Malawi,+2
++60,Malaysia,+8
++960,Maldives,+5
++223,Mali,+0
++356,Malta,+1
++692,Marshall Islands,+12
++596,Martinique,-4
++222,Mauritania,+0
++230,Mauritius,+4
++269,Mayotte,+3
++52,Mexico,-6 --> -8
++691,Micronesia,+11
++373,Moldova,+2
++377,Monaco,+1
++976,Mongolia,+8
++382,Montenegro,+1
++1 664,Montserrat,-4
++212,Morocco,+0
++258,Mozambique,+2
++264,Namibia,+2
++674,Nauru,-12
++977,Napal,+5.75
++31,Netherlands (Holland),+1
++599,Netherlands Antilles,-4
++687,New Caledonia,+11
++64,New Zealand,+12
++505,Nicaragua,+6
++227,Niger Republic,+1
++234,Nigeria,+1
++47,Norway,+1
++850,North Korea,+9
++968,Oman,+4
++92,Pakistan,+5
++507,Panama,-5
++675,Papua New Guinea,+10
++595,Paraguay,-4
++51,Peru,-5
++63,Philippines,+8
++649,Pitcairn Island,-8.5
++48,Poland,+1
++351,Portugal,+1
++1 787,Puerto Rico,-4
++974,Qatar,+3
++40,Romania,+2
++7,Russia,+2 --> +10
++250,Rwanda,+2
++290,St Helena,+0
++1 869,St Kitts and Nevis,-4
++1 758,St Lucia,-4
++1 784,St Vincent,-4
++378,San Marino,+1
++966,Saudi Arabia,+3
++221,Senegal,+0
++381,Serbia,+1
++248,Seychelles,+4
++232,Sierra Leone,+0
++65,Singapore,+8
++421,Slovakia,+1
++386,Slovenia,+1
++677,Solomon Islands,-11
++252,Somalia,+3
++27,South Africa,+2
++82,South Korea,+9
++349,Spain,+1
++94,Sri Lanka,+5.5
++249,Sudan,+2
++597,Surinam,+3
++268,Swaziland,+2
++46,Sweden,+1
++41,Switzerland,+1
++963,Syria,+2
++886,Taiwan,+8
++7,Tajikistan,+5
++255,Tanzania,+3
++66,Thailand,+7
++228,Togo,+0
++676,Tonga,-13
++1 868,Trinidad & Tobago,-4
++216,Tunisia,+1
++90,Turkey,+2
++7,Turkmenistan,+5
++1 649,Turks & Caicos Islands,-5
++688,Tuvalu,-12
++256,Uganda,+3
++380,Ukraine,+2
++971,United Arab Emirates,+4
++44,United Kingdom,+0
++598,Uraguay,-3
++1,USA,-5 --> -11
++998,Uzbekistan,+5 --> +6
++678,Vanuatu,-11
++39,Vatican City,+1
++58,Venezuela,-4
++84,Vietnam,+7
++1 340,Virgin Islands (US),-4
++685,Western Samoa,-11
++967,Yemen,+3
++243,Zaire (Congo),+1
++260,Zambia,+2
++263,Zimbabwe
