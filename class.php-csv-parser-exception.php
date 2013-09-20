@@ -84,7 +84,7 @@
 		 */
 		public function setFilename($filename=null){
 			if(is_string($filename) and !empty($filename)){
-				$this->error_filename = trim(error_filename);
+				$this->error_filename = trim($filename);
 			}
 			return $this;
 		}
