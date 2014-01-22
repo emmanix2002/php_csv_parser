@@ -21,6 +21,11 @@
     class PhpCSVParser
     {
         /**
+         * A file handle used only when using a file as the input source
+         * @var resource
+         */
+        private $file_handle;
+        /**
          * The array to hold the raw data before it's processed
          * @var array
          */
@@ -75,6 +80,7 @@
                 'quote' => '"',	#Optional character surrounding a field, one character only, defaults to double quotes
                 'rowDelimiter' => 'auto'	#String used to delimit record rows or a special value; Applicable to from_string() only
             );
+            $this->file_handle = null;
         }
         /**
          * Handles the function of throwing an exception for this file
@@ -218,17 +224,16 @@
                 );
             }
             $error_line = __LINE__ + 1; #WARNING: don't move the line above away from there
-            $lines = @file($csv_filepath, FILE_SKIP_EMPTY_LINES|FILE_IGNORE_NEW_LINES);
-            if ($lines === false)
+            $this->file_handle = fopen($csv_filepath, 'r');
+            if (!$this->file_handle)
             {
                 $this->throwException(
                     'Failed to gain access to the file',
                     $error_line,
                     "It could be that the path doesn't exist or the current permission ".
-                    "settings prevent PHP from being able to access the file!!"
+                    'settings prevent PHP from being able to access the file!!'
                 );
             }
-            $this->setDataArray($lines);
             return $this;
         }
         /**
@@ -346,16 +351,49 @@
         public function parse()
         {
             $this->parsed_data_array = array();
-            foreach ($this->data_array as $index=>$csv_string)
+            if ($this->file_handle === null)
             {
-                $parsed_row = str_getcsv(
-                    $csv_string,
-                    $this->options['delimiter'],
-                    $this->options['quote'],
-                    $this->options['escape']
-                );
-                $this->fire(PhpCSVParserEventType::EVENT_ON_RECORD, array($parsed_row, $index));
-                $this->parsed_data_array[] = $parsed_row;
+                foreach ($this->data_array as $index=>$csv_string)
+                {
+                    $csv_string = trim($csv_string);
+                    if (substr($csv_string, 0, 1) === $this->options['comment'] or
+                        strlen($csv_string) === 0)
+                    {
+                        continue;
+                    }
+                    $parsed_row = str_getcsv(
+                        $csv_string,
+                        $this->options['delimiter'],
+                        $this->options['quote'],
+                        $this->options['escape']
+                    );
+                    $this->fire(PhpCSVParserEventType::EVENT_ON_RECORD, array($parsed_row, $index));
+                    $this->parsed_data_array[] = $parsed_row;
+                }
+            }
+            else
+            {
+                $index = 0;
+                while (!feof($this->file_handle))
+                {
+                    $csv_string = trim(fgets($this->file_handle));
+                    if (substr($csv_string, 0, 1) === $this->options['comment'] or
+                        strlen($csv_string) === 0)
+                    {
+                        continue;
+                    }
+                    $parsed_row = str_getcsv(
+                        $csv_string,
+                        $this->options['delimiter'],
+                        $this->options['quote'],
+                        $this->options['escape']
+                    );
+                    $this->fire(PhpCSVParserEventType::EVENT_ON_RECORD, array($parsed_row, $index));
+                    $this->parsed_data_array[] = $parsed_row;
+                    ++$index;
+                }
+                fclose($this->file_handle);
+                $this->file_handle = null;
             }
             $this->fire(PhpCSVParserEventType::EVENT_ON_END, array(count($this->parsed_data_array)));
             return $this;
