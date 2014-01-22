@@ -1,5 +1,5 @@
 <?php
-    include("../src/PhpCSVParser.php");
+    include("../src/Emmanix2002/PhpCSVParser.php");
 
     use Emmanix2002\PhpCSV\PhpCSVParser;
     use Emmanix2002\PhpCSV\Enum\PhpCSVParserEventType;

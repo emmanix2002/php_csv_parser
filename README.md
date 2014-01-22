@@ -15,7 +15,7 @@ It has now been tested on small data sets...Still remains to be seen how it perf
 ## Examples
 
 ```php
-    include("../src/PhpCSVParser.php");
+    include("../src/Emmanix2002/PhpCSVParser.php");
 
     use Emmanix2002\PhpCSV\PhpCSVParser;
 
@@ -29,7 +29,7 @@ It has now been tested on small data sets...Still remains to be seen how it perf
     }
 ```
 ```php
-    include("../src/PhpCSVParser.php");
+    include("../src/Emmanix2002/PhpCSVParser.php");
 
     use Emmanix2002\PhpCSV\PhpCSVParser;
 
@@ -66,7 +66,7 @@ It has now been tested on small data sets...Still remains to be seen how it perf
     }
 ```
 ```php
-    include("../src/PhpCSVParser.php");
+    include("../src/Emmanix2002/PhpCSVParser.php");
 
     use Emmanix2002\PhpCSV\PhpCSVParser;
     use Emmanix2002\PhpCSV\Enum\PhpCSVParserEventType;
