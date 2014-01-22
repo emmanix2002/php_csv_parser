@@ -259,20 +259,17 @@
             }
             $lines = array();
             rewind($file_handle);
-            while (!feof($file_handle))
-            {
-                $lines[] = fgets($file_handle);
-            }
+            $this->file_handle = &$file_handle;
             $error_line = __LINE__ + 1; #WARNING: don't move the line above away from there
-            if (empty($lines))
+            if (!$this->file_handle)
             {
                 $this->throwException(
-                    'Empty CSV file',
+                    'Failed to gain access to the file',
                     $error_line,
-                    'No content could be read from the file pointed to by the resource stream'
+                    "It could be that the path doesn't exist or the current permission ".
+                    'settings prevent PHP from being able to access the file!!'
                 );
             }
-            $this->setDataArray($lines);
             return $this;
         }
         /**
