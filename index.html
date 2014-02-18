@@ -1,0 +1,165 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Php CSV Parser by emmanix2002</title>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="javascripts/main.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+  </head>
+  <body>
+
+      <header>
+        <h1>Php CSV Parser</h1>
+        <p>A simple PHP csv parser inspired by the Adaltas nodejs csv project</p>
+      </header>
+
+      <div id="banner">
+        <span id="logo"></span>
+
+        <a href="https://github.com/emmanix2002/php_csv_parser" class="button fork"><strong>View On GitHub</strong></a>
+        <div class="downloads">
+          <span>Downloads:</span>
+          <ul>
+            <li><a href="https://github.com/emmanix2002/php_csv_parser/zipball/master" class="button">ZIP</a></li>
+            <li><a href="https://github.com/emmanix2002/php_csv_parser/tarball/master" class="button">TAR</a></li>
+          </ul>
+        </div>
+      </div><!-- end banner -->
+
+    <div class="wrapper">
+      <nav>
+        <ul></ul>
+      </nav>
+      <section>
+        <h3>
+<a name="requirements" class="anchor" href="#requirements"><span class="octicon octicon-link"></span></a>Requirements</h3>
+
+<ul>
+<li>PHP 5.3 (it uses some PHP 5.3 specific functions like str_getcsv(...))</li>
+</ul><h3>
+<a name="warning" class="anchor" href="#warning"><span class="octicon octicon-link"></span></a>WARNING</h3>
+
+<p>This class has not been fully tested to ensure it works as it should -- (it's a work in progress) ;-)</p>
+
+<h4>
+<a name="update" class="anchor" href="#update"><span class="octicon octicon-link"></span></a>UPDATE</h4>
+
+<p>It has now been tested on small data sets...Still remains to be seen how it performs on large data sets :)</p>
+
+<h3>
+<a name="examples" class="anchor" href="#examples"><span class="octicon octicon-link"></span></a>Examples</h3>
+
+<div class="highlight highlight-php"><pre>    <span class="k">include</span><span class="p">(</span><span class="s2">"../src/Emmanix2002/PhpCSVParser.php"</span><span class="p">);</span>
+
+    <span class="k">use</span> <span class="nx">Emmanix2002\PhpCSV\PhpCSVParser</span><span class="p">;</span>
+
+    <span class="nv">$csv_parser</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">PhpCSVParser</span><span class="p">();</span>
+    <span class="k">if</span><span class="p">(</span><span class="nv">$csv_parser</span><span class="p">){</span>
+        <span class="nb">var_dump</span><span class="p">(</span>
+            <span class="nv">$csv_parser</span><span class="o">-&gt;</span><span class="na">fromPath</span><span class="p">(</span><span class="nx">__DIR__</span><span class="o">.</span><span class="s1">'/csv_1.csv'</span><span class="p">)</span>
+                    <span class="o">-&gt;</span><span class="na">parse</span><span class="p">()</span>
+                    <span class="o">-&gt;</span><span class="na">to</span><span class="p">(</span><span class="nx">__DIR__</span><span class="o">.</span><span class="s1">'/csv_created_by_to_path.csv'</span><span class="p">)</span>
+        <span class="p">);</span>
+    <span class="p">}</span>
+</pre></div>
+
+<div class="highlight highlight-php"><pre>    <span class="k">include</span><span class="p">(</span><span class="s2">"../src/Emmanix2002/PhpCSVParser.php"</span><span class="p">);</span>
+
+    <span class="k">use</span> <span class="nx">Emmanix2002\PhpCSV\PhpCSVParser</span><span class="p">;</span>
+
+    <span class="nv">$csv_parser</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">PhpCSVParser</span><span class="p">();</span>
+    <span class="nv">$csv_parser_2</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">PhpCSVParser</span><span class="p">();</span>
+    <span class="nv">$csv_parser_3</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">PhpCSVParser</span><span class="p">();</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nv">$csv_parser</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nb">var_dump</span><span class="p">(</span>
+            <span class="nv">$csv_parser</span><span class="o">-&gt;</span><span class="na">fromString</span><span class="p">(</span>
+                            <span class="s1">'#Welcome\n"1","2","3","4"\n"a","b","c","d"'</span><span class="p">,</span>
+                            <span class="k">array</span><span class="p">(</span><span class="s2">"rowDelimiter"</span><span class="o">=&gt;</span><span class="s1">'\n'</span><span class="p">)</span>
+                        <span class="p">)</span>
+                    <span class="o">-&gt;</span><span class="na">parse</span><span class="p">()</span>
+                    <span class="o">-&gt;</span><span class="na">to</span><span class="p">(</span><span class="s1">'array'</span><span class="p">)</span>
+        <span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nv">$csv_parser_2</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nb">var_dump</span><span class="p">(</span><span class="nv">$csv_parser_2</span><span class="o">-&gt;</span><span class="na">fromString</span><span class="p">(</span><span class="s1">'#Welcome\n"1","2","3","4"\n"a","b","c","d"'</span><span class="p">,</span><span class="k">array</span><span class="p">(</span><span class="s2">"rowDelimiter"</span><span class="o">=&gt;</span><span class="s2">"</span><span class="se">\\</span><span class="s2">n"</span><span class="p">))</span>
+                    <span class="o">-&gt;</span><span class="na">parse</span><span class="p">()</span>
+                    <span class="o">-&gt;</span><span class="na">to</span><span class="p">(</span><span class="s2">"string"</span><span class="p">));</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nv">$csv_parser_3</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nb">var_dump</span><span class="p">(</span><span class="nv">$csv_parser_3</span><span class="o">-&gt;</span><span class="na">fromString</span><span class="p">(</span><span class="s1">'#Welcome\n"1","2","3","4"\n"a","b","c","d"'</span><span class="p">,</span><span class="k">array</span><span class="p">(</span><span class="s2">"rowDelimiter"</span><span class="o">=&gt;</span><span class="s2">"</span><span class="se">\\</span><span class="s2">n"</span><span class="p">))</span>
+                    <span class="o">-&gt;</span><span class="na">parse</span><span class="p">()</span>
+                    <span class="o">-&gt;</span><span class="na">to</span><span class="p">(</span><span class="s2">"to_callback"</span><span class="p">));</span>
+    <span class="p">}</span>
+    <span class="k">function</span> <span class="nf">to_callback</span><span class="p">(</span><span class="k">array</span> <span class="nv">$rows</span><span class="p">){</span>
+        <span class="k">foreach</span><span class="p">(</span><span class="nv">$rows</span> <span class="k">as</span> <span class="nv">$row</span><span class="p">){</span>
+            <span class="k">echo</span> <span class="nb">implode</span><span class="p">(</span><span class="s2">" | "</span><span class="p">,</span> <span class="nv">$row</span><span class="p">)</span><span class="o">.</span><span class="s2">"&lt;br /&gt;"</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+</pre></div>
+
+<div class="highlight highlight-php"><pre>    <span class="k">include</span><span class="p">(</span><span class="s2">"../src/Emmanix2002/PhpCSVParser.php"</span><span class="p">);</span>
+
+    <span class="k">use</span> <span class="nx">Emmanix2002\PhpCSV\PhpCSVParser</span><span class="p">;</span>
+    <span class="k">use</span> <span class="nx">Emmanix2002\PhpCSV\Enum\PhpCSVParserEventType</span><span class="p">;</span>
+    <span class="k">use</span> <span class="nx">Emmanix2002\PhpCSV\Exception\PhpCSVParserException</span><span class="p">;</span>
+
+    <span class="nv">$csv_parser</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">PhpCSVParser</span><span class="p">();</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nv">$csv_parser</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nv">$csv_parser</span><span class="o">-&gt;</span><span class="na">fromString</span><span class="p">(</span><span class="s1">'#Welcome\n"1","2","3","4"\n"a","b","c","d"'</span><span class="p">,</span><span class="k">array</span><span class="p">(</span><span class="s2">"rowDelimiter"</span><span class="o">=&gt;</span><span class="s1">'\n'</span><span class="p">));</span>
+        <span class="nv">$csv_parser</span><span class="o">-&gt;</span><span class="na">on</span><span class="p">(</span><span class="nx">PhpCSVParserEventType</span><span class="o">::</span><span class="na">EVENT_ON_RECORD</span><span class="p">,</span> <span class="s2">"on_record"</span><span class="p">)</span>
+                    <span class="o">-&gt;</span><span class="na">on</span><span class="p">(</span><span class="nx">PhpCSVParserEventType</span><span class="o">::</span><span class="na">EVENT_ON_ERROR</span><span class="p">,</span> <span class="s2">"on_error"</span><span class="p">)</span>
+                    <span class="o">-&gt;</span><span class="na">on</span><span class="p">(</span><span class="nx">PhpCSVParserEventType</span><span class="o">::</span><span class="na">EVENT_ON_CLOSE</span><span class="p">,</span> <span class="s2">"on_close"</span><span class="p">)</span>
+                    <span class="o">-&gt;</span><span class="na">on</span><span class="p">(</span><span class="nx">PhpCSVParserEventType</span><span class="o">::</span><span class="na">EVENT_ON_END</span><span class="p">,</span> <span class="s2">"on_end"</span><span class="p">)</span>
+                    <span class="o">-&gt;</span><span class="na">on</span><span class="p">(</span><span class="nx">PhpCSVParserEventType</span><span class="o">::</span><span class="na">EVENT_ON_DATA</span><span class="p">,</span> <span class="s2">"on_data"</span><span class="p">)</span>
+                    <span class="o">-&gt;</span><span class="na">parse</span><span class="p">()</span>
+                    <span class="o">-&gt;</span><span class="na">transform</span><span class="p">(</span><span class="s2">"transform_callback"</span><span class="p">);</span>
+        <span class="nb">var_dump</span><span class="p">(</span><span class="nv">$csv_parser</span><span class="o">-&gt;</span><span class="na">to</span><span class="p">(</span><span class="s2">"array"</span><span class="p">));</span>
+    <span class="p">}</span>
+
+    <span class="k">function</span> <span class="nf">on_record</span><span class="p">(</span><span class="k">array</span> <span class="nv">$row</span><span class="p">,</span> <span class="nv">$index</span><span class="p">){</span>
+        <span class="k">echo</span> <span class="s2">"On Record fired: "</span><span class="o">.</span><span class="nb">implode</span><span class="p">(</span><span class="s2">" . "</span><span class="p">,</span> <span class="nv">$row</span><span class="p">)</span><span class="o">.</span><span class="s2">" @ index </span><span class="si">$index</span><span class="s2">&lt;br /&gt;"</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">function</span> <span class="nf">on_error</span><span class="p">(</span><span class="nx">PhpCSVParserException</span> <span class="nv">$exception</span><span class="p">){</span>
+        <span class="k">echo</span> <span class="s2">"On Error fired: "</span><span class="o">.</span><span class="nv">$exception</span><span class="o">-&gt;</span><span class="na">getFullMessage</span><span class="p">()</span><span class="o">.</span><span class="s2">"&lt;br /&gt;"</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">function</span> <span class="nf">on_close</span><span class="p">(</span><span class="nv">$count</span><span class="p">){</span>
+        <span class="k">echo</span> <span class="s2">"On Close fired: Successfully wrote </span><span class="si">$count</span><span class="s2"> records to the file&lt;br /&gt;"</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">function</span> <span class="nf">on_end</span><span class="p">(</span><span class="nv">$count</span><span class="p">){</span>
+        <span class="k">echo</span> <span class="s2">"On End fired: Done processing </span><span class="si">$count</span><span class="s2"> records :)&lt;br /&gt;"</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">function</span> <span class="nf">on_data</span><span class="p">(</span><span class="nv">$row</span><span class="p">,</span> <span class="nv">$index</span><span class="p">){</span>
+        <span class="k">echo</span> <span class="s2">"On Data fired: "</span><span class="o">.</span><span class="nb">implode</span><span class="p">(</span><span class="s2">" . "</span><span class="p">,</span> <span class="nv">$row</span><span class="p">)</span><span class="o">.</span><span class="s2">" @ index </span><span class="si">$index</span><span class="s2">&lt;br /&gt;"</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">function</span> <span class="nf">to_callback</span><span class="p">(</span><span class="k">array</span> <span class="nv">$rows</span><span class="p">){</span>
+        <span class="k">foreach</span><span class="p">(</span><span class="nv">$rows</span> <span class="k">as</span> <span class="nv">$row</span><span class="p">){</span>
+            <span class="k">echo</span> <span class="nb">implode</span><span class="p">(</span><span class="s2">" | "</span><span class="p">,</span> <span class="nv">$row</span><span class="p">)</span><span class="o">.</span><span class="s2">"&lt;br /&gt;"</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">function</span> <span class="nf">transform_callback</span><span class="p">(</span><span class="nv">$parsed_row</span><span class="p">,</span> <span class="nv">$index</span><span class="p">){</span>
+        <span class="nv">$parsed_row</span><span class="p">[]</span> <span class="o">=</span> <span class="nb">array_sum</span><span class="p">(</span><span class="nv">$parsed_row</span><span class="p">);</span>
+        <span class="k">return</span> <span class="nv">$parsed_row</span><span class="p">;</span>
+    <span class="p">}</span>
+</pre></div>
+      </section>
+      <footer>
+        <p>Project maintained by <a href="https://github.com/emmanix2002">emmanix2002</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/michigangraham">mattgraham</a></small></p>
+      </footer>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    
+  </body>
+</html>
